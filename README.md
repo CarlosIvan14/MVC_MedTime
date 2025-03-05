@@ -11,7 +11,7 @@ Sistema de gestión de citas médicas con arquitectura MVC que permite a médico
 - **Base de datos**: MySQL
 
 ### Frontend (React)
-- **Vistas**: Dashboard médico, Calendario paciente, Login
+- **Vistas**: Login, Dashboard médico, Calendario paciente, Dashboard Nurse
 - **Componentes**: Gestión de citas y calendario
 - **Estilos**: Tailwind CSS con tema claro/oscuro
 
