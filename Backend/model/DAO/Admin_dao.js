@@ -1,5 +1,7 @@
 const pool = require('../../db');
 const Admin = require('../objects/Admin');
+const DoctorDAO = require('./DoctorDAO'); // Import DoctorDAO
+const PatientDAO = require('./PatientDAO'); 
 
 class AdminDAO {
     static async getAdminById(id) {
@@ -47,6 +49,14 @@ class AdminDAO {
           email: admin.email
       };
   }
+
+    static async createDoctor(doctorData) {
+        return await DoctorDAO.createDoctor(doctorData);
+    }
+
+    static async createPatient(patientData){
+        return await PatientDAO.createPatient(patientData)
+    }
 
     
 
