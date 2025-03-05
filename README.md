@@ -18,6 +18,17 @@ Sistema de gestión de citas médicas con arquitectura MVC que permite a médico
 ## Instalación Rápida
 
 
+```bash
+# Instalar Backend
+cd Backend
+npm install
+npm start
+
+# Instalar Frontend
+cd mi-app
+npm install
+npm start
+```
 
 
 ## Características Principales
