@@ -46,6 +46,26 @@ npm start
 | MySQL | React Router |
 
 
+## Vista LOGIN
+![image](https://github.com/user-attachments/assets/2a749599-aea5-4301-960a-1074d4fb1668)
+
+## Vista Paciente
+![image](https://github.com/user-attachments/assets/f862bf12-2d2d-4b58-866e-506da097e9e8)
+
+## Vista ver Apointment
+![image](https://github.com/user-attachments/assets/063e9fbc-60c6-4767-af17-3991f9cecb2a)
+
+## Vista Agendar Appointment
+![image](https://github.com/user-attachments/assets/ef69056f-4cbe-48c7-b300-c90cd465a3ec)
+
+## Vista Doctor
+![image](https://github.com/user-attachments/assets/32db1dfc-85e8-4b37-931f-38678c30ecb7)
+
+## Vista Nurse
+![image](https://github.com/user-attachments/assets/0a1e9a86-8148-4527-988d-865b1e773ce6)
+
+## Vista Registrar Vitals
+![image](https://github.com/user-attachments/assets/fa24e441-9a16-4db2-a296-b0818cbf3b25)
 
 ## Equipo de Desarrollo
 
