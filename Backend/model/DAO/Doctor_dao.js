@@ -1,10 +1,10 @@
-const pool = require('../db');
-const Doctor = require('../Doctor');
+const pool = require('../../db');
+const Doctor = require('../objects/Doctor');
 
 class DoctorDAO {
     static async getDoctorById(id) {
         const [rows] = await pool.query(
-            `SELECT id, name, specialty, email 
+            `SELECT id, name, email 
              FROM users 
              WHERE id = ? AND role = 'medico'`,
             [id]
@@ -14,14 +14,14 @@ class DoctorDAO {
 
     static async getAllDoctors() {
         const [rows] = await pool.query(
-            `SELECT id, name, specialty, email 
+            `SELECT id, name, email 
              FROM users 
              WHERE role = 'medico'`
         );
         return rows;
     }
 
-    static async getDoctorsBySpecialty(specialty) {
+    /* static async getDoctorsBySpecialty(specialty) {
         const [rows] = await pool.query(
             `SELECT id, name, specialty, email 
              FROM users 
@@ -29,22 +29,20 @@ class DoctorDAO {
             [specialty]
         );
         return rows;
-    }
+    } */
 
     static async createDoctor(doctorData) {
       const doctor = new Doctor(
           null,
           doctorData.name,
-          doctorData.specialty,
           doctorData.email
       );
   
       const [result] = await pool.query(
-          `INSERT INTO users (name, specialty, email, role) 
+          `INSERT INTO users (name, email, role) 
            VALUES (?, ?, ?, ?, ?)`,
           [
               doctor.name,
-              doctor.specialty,
               doctor.email,
               'medico',
               
@@ -56,7 +54,6 @@ class DoctorDAO {
           id: doctor.id,
           name: doctor.name,
           role: doctor.role,
-          specialty: doctor.specialty,
           email: doctor.email
       };
   }
@@ -66,9 +63,9 @@ class DoctorDAO {
     static async updateDoctor(id, doctorData) {
         const [result] = await pool.query(
             `UPDATE users 
-             SET name = ?, specialty = ?, email = ? 
+             SET name = ?, email = ? 
              WHERE id = ? AND role = 'medico'`,
-            [doctorData.name, doctorData.specialty, doctorData.email, id]
+            [doctorData.name, doctorData.email, id]
         );
         return result.affectedRows;
     }

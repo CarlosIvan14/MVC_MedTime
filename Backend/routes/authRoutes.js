@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const DoctorDAO = require('../model/DAO/Doctor_dao');
+const PatientDAO = require('../model/DAO/Patient_Dao');
 
 // Ruta de login
 router.post('/login', async (req, res) => {
@@ -43,7 +45,6 @@ router.post('/createDoctor', async (req, res) => {
   try {
       const doctorData = {
           name: req.body.name,
-          specialty: req.body.specialty,
           email: req.body.email,
           password: req.body.password // Include password for login functionality
       };

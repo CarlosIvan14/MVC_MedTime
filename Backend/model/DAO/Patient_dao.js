@@ -1,5 +1,5 @@
-const pool = require('../db');
-const Patient = require('../Patient');
+const pool = require('../../db');
+const Patient = require('../objects/Patient');
 
 class PatientDAO {
     static async getAllPatients() {

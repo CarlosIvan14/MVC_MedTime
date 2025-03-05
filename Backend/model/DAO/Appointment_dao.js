@@ -1,5 +1,5 @@
-const pool = require('../db');
-const Appointment = require('../Appointment');
+const pool = require('../../db');
+const Appointment = require('../objects/Appointment');
 
 class AppointmentDAO {
   static async getAppointmentsByUser(userId, role) {
