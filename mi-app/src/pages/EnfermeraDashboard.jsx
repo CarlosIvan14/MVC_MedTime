@@ -1,15 +1,19 @@
-// src/pages/MedicoDashboard.jsx
+// src/pages/EnfermeraDashboard.jsx (anteriormente "MedicoDashboard.jsx")
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FiLogOut, FiRefreshCw } from 'react-icons/fi';
-import { AiOutlineCheck, AiOutlineClose, AiOutlineDelete } from 'react-icons/ai';
+import { AiOutlineCheck, AiOutlineClose, AiOutlineDelete, AiOutlineMedicineBox } from 'react-icons/ai';
 import AppointmentCard from '../Components/AppointmentCard';
 import AppointmentDetailModal from '../Components/AppointmentDetailModal';
+import VitalsModal from '../Components/VitalsModal';
 
-function MedicoDashboard() {
+function EnfermeraDashboard() {
   const [appointments, setAppointments] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showVitalsModal, setShowVitalsModal] = useState(false);
+  const [appointmentForVitals, setAppointmentForVitals] = useState(null);
 
   const navigate = useNavigate();
   const userId = localStorage.getItem('userId');
@@ -21,24 +25,24 @@ function MedicoDashboard() {
 
   const fetchAppointments = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/api/appointments/byUser/${userId}/medico`);
+      const response = await fetch(`http://localhost:4000/api/appointments/byUser/${userId}/enfermera`);
       const data = await response.json();
       setAppointments(data);
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }
   };
+  const handleOpenDetail = async (appointment) => {
+    setSelectedAppointment(appointment);
 
-  const handleOpenDetail = async(appointment) => {
-        setSelectedAppointment(appointment);
-        try {
-            const resp = await fetch(`http://localhost:4000/api/appointments/${appointment.id}/vitals`);
-            const data = await resp.json();
-            appointment.vitals = data; 
-        } catch (error) {
-            console.error('Error fetching vitals:', error);
-            appointment.vitals = [];
-        }
+    try {
+        const resp = await fetch(`http://localhost:4000/api/appointments/${appointment.id}/vitals`);
+        const data = await resp.json();
+        appointment.vitals = data;
+    } catch (error) {
+        console.error('Error fetching vitals:', error);
+        appointment.vitals = [];
+    }
     setSelectedAppointment(appointment);
     setShowDetailModal(true);
   };
@@ -72,6 +76,19 @@ function MedicoDashboard() {
     }
   };
 
+  const handleRegisterVitals = (appointmentId) => {
+    setAppointmentForVitals(appointmentId);
+    setShowVitalsModal(true);
+  };
+
+  const handleCloseVitalsModal = () => {
+    setShowVitalsModal(false);
+    setAppointmentForVitals(null);
+  };
+
+  const handleVitalsSaved = () => {
+    fetchAppointments();
+  };
   const handleLogout = () => {
     localStorage.clear();
     navigate('/');
@@ -83,7 +100,7 @@ function MedicoDashboard() {
     <div className="p-4 container">
       <div className="flex items-center justify-between mb-4 container">
         <h1 className="text-3xl font-bold">
-            Appointment Board (Doctor) - {userName}
+            Appointment Board (Nurse) - {userName}
         </h1>
         <button
           onClick={handleLogout}
@@ -92,11 +109,12 @@ function MedicoDashboard() {
           <FiLogOut size={24} />
         </button>
       </div>
+
       <div className="grid grid-cols-3 gap-4 ">
         {estados.map((estado) => {
           const citasPorEstado = appointments.filter((c) => c.state === estado);
           return (
-            <div key={estado} className="bg-gray-100 p-6 rounded-xl dark:bg-gray-800  ">
+            <div key={estado} className="bg-gray-100 p-6 rounded-xl dark:bg-gray-800">
               <h2 className="text-xl font-semibold mb-4">{estado}</h2>
               {citasPorEstado.length === 0 && (
                 <p className="text-gray-600 dark:text-gray-400">There are no appointments</p>
@@ -111,7 +129,7 @@ function MedicoDashboard() {
                     <>
                       <button
                         onClick={() => updateAppointmentState(cita.id, 'Confirmed')}
-                        className="mr-2 bg-transparent hover:text-blue-500 px-5 "
+                        className="mr-2 bg-transparent hover:text-blue-500 px-5"
                       >
                         <AiOutlineCheck size={20} />
                       </button>
@@ -147,6 +165,16 @@ function MedicoDashboard() {
                       </button>
                     </>
                   )}
+
+                  {estado === 'Confirmed' && (
+                    <button
+                      onClick={() => handleRegisterVitals(cita.id)}
+                      className="bg-transparent hover:text-blue-500 px-5"
+                      title="Register Vitals"
+                    >
+                      <AiOutlineMedicineBox size={20} />
+                    </button>
+                  )}
                 </AppointmentCard>
               ))}
             </div>
@@ -160,8 +188,16 @@ function MedicoDashboard() {
           onClose={handleCloseDetail}
         />
       )}
+
+      {showVitalsModal && appointmentForVitals && (
+        <VitalsModal
+          appointmentId={appointmentForVitals}
+          onClose={handleCloseVitalsModal}
+          onVitalsSaved={handleVitalsSaved}
+        />
+      )}
     </div>
   );
 }
 
-export default MedicoDashboard;
+export default EnfermeraDashboard;

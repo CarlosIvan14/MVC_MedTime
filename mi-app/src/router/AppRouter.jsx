@@ -4,6 +4,7 @@ import Login from "../pages/Login";
 import MedicoDashboard from "../pages/MedicoDashboard";
 import PacienteCalendar from "../pages/PacienteCalendar";
 import NotFound from "../pages/NotFound";
+import EnfermeraDashboard from "../pages/EnfermeraDashboard";
 
 function AppRouter() {
   return (
@@ -11,6 +12,7 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/medico/dashboard" element={<MedicoDashboard />} />
+        <Route path="/enfermera/dashboard" element={<EnfermeraDashboard />} />
         <Route path="/paciente/calendar" element={<PacienteCalendar />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

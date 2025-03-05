@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const DoctorDAO = require('../model/DAO/Doctor_dao');
+const PatientDAO = require('../model/DAO/Patient_Dao');
 
-// Ruta de login
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -16,8 +17,6 @@ router.post('/login', async (req, res) => {
     }
 
     const user = rows[0];
-    // En una app real, aquí harías manejo de tokens o sesión.
-    // Para simplificar, devolvemos los datos relevantes del usuario.
     res.json({
       id: user.id,
       name: user.name,
@@ -28,17 +27,52 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Error en el servidor' });
   }
 });
-// Ruta para obtener la lista de médicos
 router.get('/getDoctors', async (req, res) => {
-    try {
-      const [rows] = await pool.query(
-        "SELECT id, name FROM users WHERE role = 'medico'"
-      );
-      res.json(rows); // Devuelve un array de { id, name }
-    } catch (error) {
+  try {
+    const doctors = await DoctorDAO.getAllDoctors();
+    res.json(doctors);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener médicos' });
+  }
+});
+
+router.post('/createDoctor', async (req, res) => {
+  try {
+      const doctorData = {
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password 
+      };
+
+      const newDoctor = await DoctorDAO.createDoctor(doctorData);
+      res.json({
+          message: 'Doctor creado exitosamente',
+          doctor: newDoctor
+      });
+  } catch (error) {
       console.error(error);
-      res.status(500).json({ message: 'Error al obtener médicos' });
-    }
-  });
+      res.status(500).json({ message: 'Error al crear doctor' });
+  }
+});
+
+router.post('/createPatient', async (req, res) => {
+  try {
+      const patientData = {
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password
+      };
+
+      const newPatient = await PatientDAO.createPatient(patientData);
+      res.json({
+          message: 'Paciente creado exitosamente',
+          patient: newPatient
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al crear paciente' });
+  }
+});
 
 module.exports = router;

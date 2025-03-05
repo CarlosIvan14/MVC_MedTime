@@ -5,8 +5,17 @@ import { AiOutlineEye } from "react-icons/ai";
 
 function ScheduledAppointmentCard({ cita }) {
   const [showDetail, setShowDetail] = useState(false);
+  const [detailedCita, setDetailedCita] = useState(cita);
 
-  const handleOpenDetail = () => {
+  const handleOpenDetail = async () => {
+    try {
+      const resp = await fetch(`http://localhost:4000/api/appointments/${cita.id}/vitals`);
+      const vitalsData = await resp.json();
+      setDetailedCita({ ...cita, vitals: vitalsData });
+    } catch (error) {
+      console.error("Error fetching vitals:", error);
+      setDetailedCita({ ...cita, vitals: [] });
+    }
     setShowDetail(true);
   };
 
@@ -25,7 +34,7 @@ function ScheduledAppointmentCard({ cita }) {
         <AiOutlineEye size={24} />
       </button>
       {showDetail && (
-        <AppointmentDetailModal cita={cita} onClose={handleCloseDetail} />
+        <AppointmentDetailModal cita={detailedCita} onClose={handleCloseDetail} />
       )}
     </div>
   );
