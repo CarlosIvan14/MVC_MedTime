@@ -4,8 +4,6 @@
   const AppointmentDAO = require('../model/DAO/Appointment_dao');
 
 
-  /// Ruta para obtener citas por rol y usuario
-
   router.get('/byUser/:userId/:role', async (req, res) => {
     try {
       const { userId, role } = req.params;
@@ -18,7 +16,6 @@
   });
     
 
-  // Actualizar estado de cita
   router.put('/:appointmentId/state', async (req, res) => {
     try {
       const { appointmentId } = req.params;
@@ -36,7 +33,6 @@
     }
   });
 
-  // Borrar cita
   router.delete('/:appointmentId', async (req, res) => {
     try {
       const { appointmentId } = req.params;
@@ -53,7 +49,6 @@
     }
   });
 
-  // Crear nueva cita
   router.post('/', async (req, res) => {
     try {
       const { date, time, motive, patientId, doctorId } = req.body;
@@ -65,4 +60,45 @@
     }
   });
 
+  router.post('/:appointmentId/vitals', async (req, res) => {
+    try {
+      const { appointmentId } = req.params;
+      const {
+        nurseId,
+        temperature,
+        bloodPressure,
+        heartRate,
+        respiratoryRate,
+        oxygenSaturation,
+        notes
+      } = req.body;
+
+      const vitalsId = await AppointmentDAO.addVitals({
+        appointmentId,
+        nurseId,
+        temperature,
+        bloodPressure,
+        heartRate,
+        respiratoryRate,
+        oxygenSaturation,
+        notes
+      });
+
+      res.json({ message: 'Vitals added', vitalsId });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error adding vitals' });
+    }
+  });
+
+  router.get('/:appointmentId/vitals', async (req, res) => {
+    try {
+      const { appointmentId } = req.params;
+      const vitals = await AppointmentDAO.getVitalsByAppointment(appointmentId);
+      res.json(vitals);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error fetching vitals' });
+    }
+  });
   module.exports = router;

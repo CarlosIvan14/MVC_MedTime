@@ -9,7 +9,7 @@ function PacienteCalendar() {
   const [appointments, setAppointments] = useState([]);
   const today = new Date();
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1); // getMonth() es 0-based
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth() + 1); 
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
 

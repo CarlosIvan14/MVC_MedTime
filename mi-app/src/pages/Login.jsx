@@ -35,6 +35,8 @@ function Login() {
         navigate('/medico/dashboard');
       } else if (data.role === 'paciente') {
         navigate('/paciente/calendar');
+      }else if (data.role === 'enfermera') {
+        navigate('/enfermera/dashboard');
       }
     } catch (err) {
       setError(err.message);
