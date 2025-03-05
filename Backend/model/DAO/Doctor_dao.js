@@ -1,5 +1,5 @@
 const pool = require('../db');
-const Doctor = require('../entities/Doctor');
+const Doctor = require('../Doctor');
 
 class DoctorDAO {
     static async getDoctorById(id) {
