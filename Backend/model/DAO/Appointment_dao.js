@@ -70,7 +70,7 @@ class AppointmentDAO {
         date,
         time,
         motive,
-        'Pendiente',
+        'Pendient',
         patientId,
         doctorId
     );
